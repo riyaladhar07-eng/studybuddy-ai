@@ -207,43 +207,115 @@ chat.scrollTop = chat.scrollHeight;
 
 function getResponse(text){
 
-if(text.includes("hello") || text.includes("hi")){
-return "Hello 👋 I am StudyBuddy AI!";
+// GREETINGS
+
+if(text.includes("hello") || text.includes("hi") || text.includes("hey")){
+return "Hello 👋 I am StudyBuddy AI! Ask me anything about coding, AI, studying or technology.";
 }
 
-if(text.includes("what is ai")){
-return "AI means Artificial Intelligence. It helps computers think and solve problems like humans.";
+// AI
+
+if(text.includes("what is ai") || text.includes("artificial intelligence")){
+return "Artificial Intelligence helps computers learn, think and solve problems like humans.";
 }
+
+if(text.includes("machine learning")){
+return "Machine Learning is a branch of AI where systems learn from data automatically.";
+}
+
+if(text.includes("deep learning")){
+return "Deep Learning uses neural networks for advanced AI tasks.";
+}
+
+// CODING
 
 if(text.includes("python")){
-return "Python is a very popular programming language used in AI and software development.";
+return "Python is one of the best programming languages for AI and software development.";
 }
 
 if(text.includes("html")){
-return "HTML is used to create the structure of websites.";
+return "HTML creates the structure of websites.";
 }
 
 if(text.includes("css")){
-return "CSS is used to style and design websites beautifully.";
+return "CSS styles and designs websites beautifully.";
 }
 
 if(text.includes("javascript")){
 return "JavaScript adds interactivity and logic to websites.";
 }
 
-if(text.includes("motivation")){
-return "Small daily improvements create huge success over time 🚀";
+if(text.includes("java")){
+return "Java is popular for Android apps and enterprise software.";
 }
 
-if(text.includes("study")){
-return "Consistent study with revision is the key to success 📚";
+if(text.includes("c++")){
+return "C++ is powerful for competitive programming and system software.";
 }
+
+// STUDY
+
+if(text.includes("study plan")){
+return "A strong study plan includes consistency, revision and focused practice 📚";
+}
+
+if(text.includes("focus")){
+return "Try the Pomodoro method: 25 minutes study + 5 minute break 🔥";
+}
+
+if(text.includes("motivation")){
+return "Small daily improvements create massive success 🚀";
+}
+
+if(text.includes("exam")){
+return "Practice regularly and revise smartly before exams.";
+}
+
+// KOREA
 
 if(text.includes("korea")){
-return "Korea is famous for technology, AI research and innovation 🇰🇷";
+return "Korea is famous for AI research, technology and top universities 🇰🇷";
 }
 
-return "I'm still learning 🤖 Ask me about AI, coding, motivation, Korea or study tips.";
+if(text.includes("skku")){
+return "Sungkyunkwan University is one of Korea's top universities for AI and Computer Science.";
+}
+
+if(text.includes("korea university")){
+return "Korea University has excellent AI and Computer Science research labs.";
+}
+
+// TECH
+
+if(text.includes("robot")){
+return "Robots use AI and sensors to perform tasks automatically.";
+}
+
+if(text.includes("cybersecurity")){
+return "Cybersecurity protects systems and data from hackers.";
+}
+
+if(text.includes("blockchain")){
+return "Blockchain is a secure decentralized digital ledger technology.";
+}
+
+// CAREER
+
+if(text.includes("portfolio")){
+return "Strong portfolios include projects, certifications and real-world applications.";
+}
+
+if(text.includes("github")){
+return "GitHub helps developers store projects and showcase coding skills.";
+}
+
+if(text.includes("project")){
+return "Projects demonstrate practical skills and improve university applications.";
+}
+
+// DEFAULT
+
+return "I'm still learning 🤖 Ask me about AI, coding, Korea, study tips, motivation or technology.";
 
 }
 
