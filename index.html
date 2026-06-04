@@ -7,8 +7,13 @@
 
 <style>
 
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
 font-family:Arial,sans-serif;
 background:#0b1120;
 color:white;
@@ -16,8 +21,6 @@ display:flex;
 flex-direction:column;
 height:100vh;
 }
-
-/* HEADER */
 
 header{
 background:#111827;
@@ -27,50 +30,32 @@ font-size:28px;
 font-weight:bold;
 color:#38bdf8;
 border-bottom:1px solid #1e293b;
-box-shadow:0 2px 10px rgba(0,0,0,0.4);
 }
-
-/* CHAT AREA */
 
 #chat{
 flex:1;
-padding:20px;
 overflow-y:auto;
-display:flex;
-flex-direction:column;
+padding:20px;
 background:linear-gradient(to bottom,#0b1120,#111827);
 }
 
-/* MESSAGE */
-
 .msg{
 padding:14px;
-margin:10px;
-border-radius:18px;
-max-width:75%;
-line-height:1.5;
-font-size:16px;
-word-wrap:break-word;
-animation:fadeIn 0.3s ease;
+margin:10px 0;
+border-radius:16px;
+max-width:80%;
+line-height:1.6;
 }
-
-/* USER MESSAGE */
 
 .user{
-background:linear-gradient(135deg,#2563eb,#1d4ed8);
+background:#2563eb;
 margin-left:auto;
-text-align:right;
 }
-
-/* AI MESSAGE */
 
 .ai{
 background:#1e293b;
-margin-right:auto;
 border:1px solid #334155;
 }
-
-/* INPUT AREA */
 
 #inputBox{
 display:flex;
@@ -79,52 +64,30 @@ background:#0f172a;
 border-top:1px solid #1e293b;
 }
 
-/* INPUT */
-
 input{
 flex:1;
 padding:14px;
 border:none;
-border-radius:14px;
+border-radius:12px;
 background:#1e293b;
 color:white;
 font-size:16px;
 outline:none;
 }
 
-input::placeholder{
-color:#94a3b8;
-}
-
-/* BUTTON */
-
 button{
-padding:14px 20px;
+padding:14px 22px;
 margin-left:10px;
 border:none;
-border-radius:14px;
-background:linear-gradient(135deg,#38bdf8,#0ea5e9);
+border-radius:12px;
+background:#38bdf8;
 color:white;
 font-weight:bold;
 cursor:pointer;
-font-size:15px;
 }
 
 button:hover{
-transform:scale(1.05);
-}
-
-/* ANIMATION */
-
-@keyframes fadeIn{
-from{
-opacity:0;
-transform:translateY(10px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
+opacity:0.9;
 }
 
 </style>
@@ -134,7 +97,11 @@ transform:translateY(0);
 
 <header>🤖 StudyBuddy AI</header>
 
-<div id="chat"></div>
+<div id="chat">
+<div class="msg ai">
+Hello! I am StudyBuddy AI. Ask me about AI, programming, web development, cybersecurity, cloud computing, databases, Korea, study tips, and technology.
+</div>
+</div>
 
 <div id="inputBox">
 <input type="text" id="input" placeholder="Ask anything..." onkeypress="handleEnter(event)">
@@ -144,299 +111,132 @@ transform:translateY(0);
 <script>
 
 function handleEnter(event){
-if(event.key === "Enter"){
+if(event.key==="Enter"){
 sendMessage();
 }
 }
 
 function sendMessage(){
 
-let input =
-document.getElementById("input").value.trim();
+const input=document.getElementById("input");
+const text=input.value.trim();
 
-if(input === ""){
-return;
+if(text==="") return;
+
+const chat=document.getElementById("chat");
+
+chat.innerHTML+=`
+<div class="msg user">${text}</div>
+`;
+
+input.value="";
+
+setTimeout(()=>{
+chat.innerHTML+=`
+<div class="msg ai">${getResponse(text.toLowerCase())}</div>
+`;
+chat.scrollTop=chat.scrollHeight;
+},500);
+
+chat.scrollTop=chat.scrollHeight;
 }
-
-let chat =
-document.getElementById("chat");
-
-/* USER MESSAGE */
-
-chat.innerHTML += `
-<div class="msg user">
-${input}
-</div>
-`;
-
-document.getElementById("input").value = "";
-
-chat.scrollTop = chat.scrollHeight;
-
-/* AI TYPING */
-
-chat.innerHTML += `
-<div class="msg ai" id="typing">
-StudyBuddy AI is typing...
-</div>
-`;
-
-chat.scrollTop = chat.scrollHeight;
-
-/* AI RESPONSE */
-
-setTimeout(function(){
-
-document.getElementById("typing").remove();
-
-let response = getResponse(input.toLowerCase());
-
-chat.innerHTML += `
-<div class="msg ai">
-${response}
-</div>
-`;
-
-chat.scrollTop = chat.scrollHeight;
-
-},1000);
-
-}
-
-/* AI BRAIN */
 
 function getResponse(text){
 
-// GREETINGS
+if(text.includes("hello") || text.includes("hi") || text.includes("hey"))
+return "Hello 👋 Welcome to StudyBuddy AI.";
 
-if(text.includes("hello") || text.includes("hi") || text.includes("hey")){
-return "Hello 👋 I am StudyBuddy AI! Ask me anything about coding, AI, studying or technology.";
-}
+if(text.includes("ai"))
+return "Artificial Intelligence enables machines to learn, reason, and solve problems.";
 
-// AI
+if(text.includes("machine learning"))
+return "Machine Learning is a branch of AI where systems learn patterns from data.";
 
-if(text.includes("what is ai") || text.includes("artificial intelligence")){
-return "Artificial Intelligence (AI) is a field of computer science that enables machines to perform tasks that normally require human intelligence. These tasks include learning, reasoning, problem-solving, language understanding, and decision-making. AI powers technologies such as ChatGPT, recommendation systems, self-driving cars, voice assistants, and modern robotics.";
-}
+if(text.includes("deep learning"))
+return "Deep Learning uses neural networks with multiple layers.";
 
-if(text.includes("machine learning")){
-return "Machine Learning is a branch of Artificial Intelligence that allows computers to learn patterns from data without being explicitly programmed. It is widely used in recommendation systems, fraud detection, medical diagnosis, image recognition, and speech processing.";
-}
+if(text.includes("python"))
+return "Python is widely used in AI, automation, data science, and web development.";
 
-if(text.includes("deep learning")){
-return "Deep Learning is an advanced area of Machine Learning that uses neural networks with many layers. It helps computers recognize speech, identify objects in images, translate languages, and generate human-like content.";
-}
+if(text.includes("java"))
+return "Java is used for Android development and enterprise software.";
 
-// CODING
+if(text.includes("c++"))
+return "C++ is popular for game development and high-performance software.";
 
-if(text.includes("python")){
-return "Python is a powerful and beginner-friendly programming language. It is widely used in Artificial Intelligence, Machine Learning, Data Science, Automation, Cybersecurity, and Web Development. Its simple syntax makes it one of the most popular programming languages in the world.";
-}
+if(text.includes("javascript"))
+return "JavaScript adds interactivity and dynamic features to websites.";
 
-if(text.includes("html")){
-return "HTML (HyperText Markup Language) is the standard language used to create the structure of web pages. It defines headings, paragraphs, images, links, tables, and forms. Every website uses HTML as its foundation.";
-}
+if(text.includes("html"))
+return "HTML creates the structure of web pages.";
 
-if(text.includes("css")){
-return "CSS (Cascading Style Sheets) is used to style and design websites. It controls colors, layouts, fonts, spacing, animations, and responsiveness. CSS works together with HTML to make websites visually attractive and mobile-friendly.";
-}
+if(text.includes("css"))
+return "CSS styles and designs websites.";
 
-if(text.includes("javascript")){
-return "JavaScript is a programming language that adds interactivity and dynamic behavior to websites. It can update content, validate forms, create animations, and communicate with servers. Together, HTML, CSS, and JavaScript form the foundation of modern web development.";
-}
+if(text.includes("programming"))
+return "Programming is the process of writing instructions for computers.";
 
-if(text.includes("java")){
-return "Java is a versatile programming language used for Android app development, enterprise software, cloud systems, and large-scale applications. Its 'write once, run anywhere' philosophy made it one of the most popular languages in the world.";
-}
+if(text.includes("variable"))
+return "A variable stores data values inside a program.";
 
-if(text.includes("c++")){
-return "C++ is a high-performance programming language widely used in game development, operating systems, competitive programming, robotics, and software requiring speed and efficiency.";
-}
+if(text.includes("function"))
+return "A function is a reusable block of code.";
 
-// STUDY
+if(text.includes("loop"))
+return "A loop repeats a block of code multiple times.";
 
-if(text.includes("study plan")){
-return "A strong study plan includes consistency, revision and focused practice 📚";
-}
+if(text.includes("array"))
+return "An array stores multiple values in a single variable.";
 
-if(text.includes("focus")){
-return "Try the Pomodoro method: 25 minutes study + 5 minute break 🔥";
-}
+if(text.includes("algorithm"))
+return "An algorithm is a step-by-step procedure for solving a problem.";
 
-if(text.includes("motivation")){
-return "Small daily improvements create massive success 🚀";
-}
+if(text.includes("database"))
+return "A database stores information electronically.";
 
-if(text.includes("exam")){
-return "Practice regularly and revise smartly before exams.";
-}
+if(text.includes("sql"))
+return "SQL is used to manage and query databases.";
 
-// KOREA
+if(text.includes("github"))
+return "GitHub hosts and manages code repositories.";
 
-if(text.includes("korea")){
-return "Korea is famous for AI research, technology and top universities 🇰🇷";
-}
+if(text.includes("git"))
+return "Git tracks changes in source code.";
 
-if(text.includes("skku")){
-return "Sungkyunkwan University is one of Korea's top universities for AI and Computer Science.";
-}
+if(text.includes("cybersecurity"))
+return "Cybersecurity protects systems and networks from attacks.";
 
-if(text.includes("korea university")){
-return "Korea University has excellent AI and Computer Science research labs.";
-}
+if(text.includes("cloud"))
+return "Cloud computing provides computing services over the internet.";
 
-// TECH
+if(text.includes("aws"))
+return "AWS is Amazon's cloud computing platform.";
 
-if(text.includes("robot")){
-return "Robots use AI and sensors to perform tasks automatically.";
-}
+if(text.includes("azure"))
+return "Azure is Microsoft's cloud platform.";
 
-if(text.includes("cybersecurity")){
-return "Cybersecurity protects systems and data from hackers.";
-}
+if(text.includes("robot"))
+return "Robots use sensors, software, and AI to perform tasks.";
 
-if(text.includes("blockchain")){
-return "Blockchain is a secure decentralized digital ledger technology.";
-}
+if(text.includes("blockchain"))
+return "Blockchain is a decentralized digital ledger.";
 
-// CAREER
+if(text.includes("chatgpt"))
+return "ChatGPT is an AI language model that understands and generates text.";
 
-if(text.includes("portfolio")){
-return "Strong portfolios include projects, certifications and real-world applications.";
-}
+if(text.includes("korea"))
+return "Korea is known for advanced technology and world-class universities.";
 
-if(text.includes("github")){
-return "GitHub helps developers store projects and showcase coding skills.";
-}
+if(text.includes("skku"))
+return "SKKU is one of South Korea's leading universities.";
 
-if(text.includes("project")){
-return "Projects demonstrate practical skills and improve university applications.";
-}
-/* PROGRAMMING */
+if(text.includes("study plan"))
+return "A good study plan includes consistency, revision, and practice.";
 
-if(text.includes("programming")){ return "Programming is the process of creating instructions that tell a computer what to do."; }
+if(text.includes("motivation"))
+return "Small daily progress creates long-term success.";
 
-if(text.includes("variable")){ return "A variable stores data that can be used and modified in a program."; }
-
-if(text.includes("function")){ return "A function is a reusable block of code that performs a specific task."; }
-
-if(text.includes("loop")){ return "A loop repeats a block of code multiple times."; }
-
-if(text.includes("array")){ return "An array stores multiple values in a single variable."; }
-
-if(text.includes("object")){ return "An object stores data in key-value pairs."; }
-
-if(text.includes("debugging")){ return "Debugging is the process of finding and fixing errors in code."; }
-
-if(text.includes("algorithm")){ return "An algorithm is a step-by-step process for solving a problem."; }
-
-if(text.includes("data structure")){ return "Data structures organize data efficiently for processing and storage."; }
-
-if(text.includes("recursion")){ return "Recursion occurs when a function calls itself."; }
-
-/* WEB DEVELOPMENT */
-
-if(text.includes("frontend")){ return "Frontend development focuses on the visual parts of websites users interact with."; }
-
-if(text.includes("backend")){ return "Backend development manages servers, databases, and application logic."; }
-
-if(text.includes("full stack")){ return "A Full Stack Developer works on both frontend and backend development."; }
-
-if(text.includes("react")){ return "React is a JavaScript library used to build interactive user interfaces."; }
-
-if(text.includes("bootstrap")){ return "Bootstrap is a CSS framework used to create responsive websites quickly."; }
-
-if(text.includes("responsive design")){ return "Responsive design ensures websites work on phones, tablets, and computers."; }
-
-if(text.includes("website")){ return "A website is a collection of web pages accessible through the internet."; }
-
-if(text.includes("web development")){ return "Web development is the process of creating websites and web applications."; }
-
-/* AI */
-
-if(text.includes("chatgpt")){ return "ChatGPT is an AI language model that understands and generates human-like text."; }
-
-if(text.includes("neural network")){ return "A neural network is an AI model inspired by the structure of the human brain."; }
-
-if(text.includes("nlp")){ return "Natural Language Processing helps computers understand human language."; }
-
-if(text.includes("computer vision")){ return "Computer Vision enables computers to interpret and analyze images and videos."; }
-
-if(text.includes("generative ai")){ return "Generative AI creates new content such as text, images, code, and audio."; }
-
-if(text.includes("data science")){ return "Data Science combines statistics, programming, and data analysis."; }
-
-if(text.includes("big data")){ return "Big Data refers to extremely large datasets that require advanced tools for analysis."; }
-
-/* DATABASES */
-
-if(text.includes("database")){ return "A database is an organized collection of information stored electronically."; }
-
-if(text.includes("sql")){ return "SQL is a language used to manage and query databases."; }
-
-if(text.includes("mysql")){ return "MySQL is a popular relational database management system."; }
-
-if(text.includes("mongodb")){ return "MongoDB is a NoSQL database that stores information in documents."; }
-
-if(text.includes("postgresql")){ return "PostgreSQL is a powerful open-source relational database."; }
-
-/* CLOUD */
-
-if(text.includes("cloud computing")){ return "Cloud Computing provides computing services over the internet."; }
-
-if(text.includes("aws")){ return "AWS is Amazon's cloud computing platform."; }
-
-if(text.includes("azure")){ return "Microsoft Azure is a cloud platform for building and managing applications."; }
-
-if(text.includes("google cloud")){ return "Google Cloud provides cloud computing services from Google."; }
-
-if(text.includes("server")){ return "A server provides resources and services to other computers over a network."; }
-
-/* CYBERSECURITY */
-
-if(text.includes("cybersecurity")){ return "Cybersecurity protects systems and data from digital attacks."; }
-
-if(text.includes("hacker")){ return "Ethical hackers help identify and fix security vulnerabilities."; }
-
-if(text.includes("encryption")){ return "Encryption protects data by converting it into a secure coded format."; }
-
-if(text.includes("firewall")){ return "A firewall monitors and controls incoming and outgoing network traffic."; }
-
-if(text.includes("malware")){ return "Malware is malicious software designed to damage or exploit systems."; }
-
-if(text.includes("phishing")){ return "Phishing is a cyberattack that tricks users into revealing sensitive information."; }
-
-if(text.includes("vpn")){ return "A VPN encrypts internet traffic and improves online privacy."; }
-
-/* COMPUTER SCIENCE */
-
-if(text.includes("computer science")){ return "Computer Science studies algorithms, software, AI, and computing systems."; }
-
-if(text.includes("operating system")){ return "An operating system manages hardware and software resources."; }
-
-if(text.includes("linux")){ return "Linux is a popular open-source operating system."; }
-
-if(text.includes("ram")){ return "RAM is temporary memory used while programs are running."; }
-
-if(text.includes("cpu")){ return "The CPU executes instructions and performs calculations."; }
-
-if(text.includes("network")){ return "A network connects computers so they can share information."; }
-
-if(text.includes("internet")){ return "The Internet is a global network connecting billions of devices."; }
-
-/* DEVELOPER TOOLS */
-
-if(text.includes("git")){ return "Git is a version control system used to track code changes."; }
-
-if(text.includes("github")){ return "GitHub is a platform for storing and collaborating on code projects."; }
-
-if(text.includes("open source")){ return "Open-source software allows anyone to view and contribute to the code."; }
-
-if(text.includes("api")){ return "An API allows different software applications to communicate with each other."; }
-
-// DEFAULT
-
-return "I'm still learning 🤖 Ask me about AI, coding, Korea, study tips, motivation or technology.";
+return "I can answer questions about AI, programming, web development, cybersecurity, cloud computing, databases, technology, Korea, and study skills.";
 
 }
 
